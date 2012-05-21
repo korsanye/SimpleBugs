@@ -4,22 +4,10 @@
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- * 
- * Licensed under the Open Software License version 3.0
- * 
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		ExpressionEngine Dev Team
+ * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -33,7 +21,7 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Uploads
- * @author		EllisLab Dev Team
+ * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/file_uploading.html
  */
 class CI_Upload {
@@ -42,7 +30,6 @@ class CI_Upload {
 	public $max_width				= 0;
 	public $max_height				= 0;
 	public $max_filename			= 0;
-	public $max_filename_increment 	= 100;
 	public $allowed_types			= "";
 	public $file_temp				= "";
 	public $file_name				= "";
@@ -93,32 +80,31 @@ class CI_Upload {
 	public function initialize($config = array())
 	{
 		$defaults = array(
-							'max_size'					=> 0,
-							'max_width'					=> 0,
-							'max_height'				=> 0,
-							'max_filename'				=> 0,
-							'max_filename_increment'	=> 100,
-							'allowed_types'				=> "",
-							'file_temp'					=> "",
-							'file_name'					=> "",
-							'orig_name'					=> "",
-							'file_type'					=> "",
-							'file_size'					=> "",
-							'file_ext'					=> "",
-							'upload_path'				=> "",
-							'overwrite'					=> FALSE,
-							'encrypt_name'				=> FALSE,
-							'is_image'					=> FALSE,
-							'image_width'				=> '',
-							'image_height'				=> '',
-							'image_type'				=> '',
-							'image_size_str'			=> '',
-							'error_msg'					=> array(),
-							'mimes'						=> array(),
-							'remove_spaces'				=> TRUE,
-							'xss_clean'					=> FALSE,
-							'temp_prefix'				=> "temp_file_",
-							'client_name'				=> ''
+							'max_size'			=> 0,
+							'max_width'			=> 0,
+							'max_height'		=> 0,
+							'max_filename'		=> 0,
+							'allowed_types'		=> "",
+							'file_temp'			=> "",
+							'file_name'			=> "",
+							'orig_name'			=> "",
+							'file_type'			=> "",
+							'file_size'			=> "",
+							'file_ext'			=> "",
+							'upload_path'		=> "",
+							'overwrite'			=> FALSE,
+							'encrypt_name'		=> FALSE,
+							'is_image'			=> FALSE,
+							'image_width'		=> '',
+							'image_height'		=> '',
+							'image_type'		=> '',
+							'image_size_str'	=> '',
+							'error_msg'			=> array(),
+							'mimes'				=> array(),
+							'remove_spaces'		=> TRUE,
+							'xss_clean'			=> FALSE,
+							'temp_prefix'		=> "temp_file_",
+							'client_name'		=> ''
 						);
 
 
@@ -417,7 +403,7 @@ class CI_Upload {
 		$filename = str_replace($this->file_ext, '', $filename);
 
 		$new_filename = '';
-		for ($i = 1; $i < $this->max_filename_increment; $i++)
+		for ($i = 1; $i < 100; $i++)
 		{
 			if ( ! file_exists($path.$filename.$i.$this->file_ext))
 			{

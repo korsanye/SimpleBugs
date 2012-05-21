@@ -4,22 +4,10 @@
  *
  * An open source application development framework for PHP 5.1.6 or newer
  *
- * NOTICE OF LICENSE
- * 
- * Licensed under the Open Software License version 3.0
- * 
- * This source file is subject to the Open Software License (OSL 3.0) that is
- * bundled with this package in the files license.txt / license.rst.  It is
- * also available through the world wide web at this URL:
- * http://opensource.org/licenses/OSL-3.0
- * If you did not receive a copy of the license and are unable to obtain it
- * through the world wide web, please send an email to
- * licensing@ellislab.com so we can send you a copy immediately.
- *
  * @package		CodeIgniter
- * @author		EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc. (http://ellislab.com/)
- * @license		http://opensource.org/licenses/OSL-3.0 Open Software License (OSL 3.0)
+ * @author		ExpressionEngine Dev Team
+ * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
  * @filesource
@@ -33,7 +21,7 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Security
- * @author		EllisLab Dev Team
+ * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/security.html
  */
 class CI_Security {
@@ -45,7 +33,6 @@ class CI_Security {
 	 * @access protected
 	 */
 	protected $_xss_hash			= '';
-
 	/**
 	 * Random Hash for Cross Site Request Forgery Protection Cookie
 	 *
@@ -53,7 +40,6 @@ class CI_Security {
 	 * @access protected
 	 */
 	protected $_csrf_hash			= '';
-
 	/**
 	 * Expiration time for Cross Site Request Forgery Protection Cookie
 	 * Defaults to two hours (in seconds)
@@ -62,7 +48,6 @@ class CI_Security {
 	 * @access protected
 	 */
 	protected $_csrf_expire			= 7200;
-
 	/**
 	 * Token name for Cross Site Request Forgery Protection Cookie
 	 *
@@ -70,7 +55,6 @@ class CI_Security {
 	 * @access protected
 	 */
 	protected $_csrf_token_name		= 'ci_csrf_token';
-
 	/**
 	 * Cookie name for Cross Site Request Forgery Protection Cookie
 	 *
@@ -78,14 +62,12 @@ class CI_Security {
 	 * @access protected
 	 */
 	protected $_csrf_cookie_name	= 'ci_csrf_token';
-
 	/**
 	 * List of never allowed strings
 	 *
 	 * @var array
 	 * @access protected
 	 */
-
 	protected $_never_allowed_str = array(
 					'document.cookie'	=> '[removed]',
 					'document.write'	=> '[removed]',
@@ -99,6 +81,7 @@ class CI_Security {
 					'<comment>'			=> '&lt;comment&gt;'
 	);
 
+	/* never allowed, regex replacement */
 	/**
 	 * List of never allowed regex replacement
 	 *
@@ -153,16 +136,6 @@ class CI_Security {
 			return $this->csrf_set_cookie();
 		}
 
-		// Check if URI has been whitelisted from CSRF checks
-		if ($exclude_uris = config_item('csrf_exclude_uris'))
-		{
-			$uri = load_class('URI', 'core');
-			if (in_array($uri->uri_string(), $exclude_uris))
-			{
-				return $this;
-			}
-		}
-
 		// Do the tokens exist in both the _POST and _COOKIE arrays?
 		if ( ! isset($_POST[$this->_csrf_token_name]) OR
 			 ! isset($_COOKIE[$this->_csrf_cookie_name]))
@@ -182,11 +155,10 @@ class CI_Security {
 
 		// Nothing should last forever
 		unset($_COOKIE[$this->_csrf_cookie_name]);
-                $this->_csrf_hash = '';
 		$this->_csrf_set_hash();
 		$this->csrf_set_cookie();
 
-		log_message('debug', "CSRF token verified");
+		log_message('debug', "CSRF token verified ");
 
 		return $this;
 	}
@@ -201,7 +173,7 @@ class CI_Security {
 	public function csrf_set_cookie()
 	{
 		$expire = time() + $this->_csrf_expire;
-		$secure_cookie = (bool) config_item('cookie_secure');
+		$secure_cookie = (config_item('cookie_secure') === TRUE) ? 1 : 0;
 
 		if ($secure_cookie)
 		{
@@ -398,11 +370,16 @@ class CI_Security {
 
 		foreach ($words as $word)
 		{
-			$word = implode("\s*", str_split($word)) . "\s*";
+			$temp = '';
+
+			for ($i = 0, $wordlen = strlen($word); $i < $wordlen; $i++)
+			{
+				$temp .= substr($word, $i, 1)."\s*";
+			}
 
 			// We only want to do this when it is followed by a non-word character
 			// That way valid stuff like "dealer to" does not become "dealerto"
-			$str = preg_replace_callback('#('.substr($word, 0, -3).')(\W)#is', array($this, '_compact_exploded_words'), $str);
+			$str = preg_replace_callback('#('.substr($temp, 0, -3).')(\W)#is', array($this, '_compact_exploded_words'), $str);
 		}
 
 		/*
@@ -481,7 +458,7 @@ class CI_Security {
 
 		if ($is_image === TRUE)
 		{
-			return ($str === $converted_string) ? TRUE : FALSE;
+			return ($str == $converted_string) ? TRUE: FALSE;
 		}
 
 		log_message('debug', "XSS Filtering completed");
@@ -523,16 +500,11 @@ class CI_Security {
 	 * @param	string
 	 * @return	string
 	 */
-	public function entity_decode($str, $charset = NULL)
+	public function entity_decode($str, $charset='UTF-8')
 	{
-		if (strpos($str, '&') === FALSE)
+		if (stristr($str, '&') === FALSE)
 		{
 			return $str;
-		}
-
-		if (empty($charset))
-		{
-			$charset = config_item('charset');
 		}
 
 		$str = html_entity_decode($str, ENT_COMPAT, $charset);
@@ -881,14 +853,14 @@ class CI_Security {
 				return $this->_csrf_hash = $_COOKIE[$this->_csrf_cookie_name];
 			}
 
-			$this->_csrf_hash = md5(uniqid(rand(), TRUE));
-			$this->csrf_set_cookie();
+			return $this->_csrf_hash = md5(uniqid(rand(), TRUE));
 		}
 
 		return $this->_csrf_hash;
 	}
 
 }
+// END Security Class
 
 /* End of file Security.php */
-/* Location: ./system/core/Security.php */
+/* Location: ./system/libraries/Security.php */
