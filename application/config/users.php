@@ -2,13 +2,16 @@
 
 /*
 |--------------------------------------------------------------------------
-| Random Generation configuration
+| RANDOM.ORG Random Generation configuration
 |--------------------------------------------------------------------------
 |
 | This setting enables you to decide whether or not you want to use
 | random.org as the random generator for creating salts.
-| Using random.org enables you to use TRUE random generation.
+| Enabling this will make salt generation slower (as this is done over HTTP).
 | Please refer to http://www.random.org for elaboration of true randomness.
+|
+| To use this, make sure that allow_url_fopen is enabled:
+| http://www.php.net/manual/en/filesystem.configuration.php#ini.allow-url-fopen
 |
 */
 
