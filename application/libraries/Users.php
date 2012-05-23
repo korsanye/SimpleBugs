@@ -12,10 +12,18 @@ class Users {
 	{
 		$this->CI =& get_instance();
 		$this->CI->config->load('users', TRUE);
-		$this->CI->load->helper(array('language', 'email', 'url'));
+		$this->CI->load->helper(array('language', 'email', 'url', 'cookie'));
 		$this->CI->lang->load('users');
 		$this->CI->load->library(array('session', 'email'));		
-		$this->CI->load->database();		
+		$this->CI->load->database();
+		
+		//Prevent browsers from using history to browse in the user system.
+		$this->CI->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
+		$this->CI->output->set_header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+		$this->CI->output->set_header("Pragma: no-cache"); 
+		
+		
+		$this->_check_remember_me();
 	}
 	
 	public function salt()
@@ -50,7 +58,7 @@ class Users {
 	* @param	$password
 	* @return	mixed Object of user if user can be authenticaed, otherwise boolean FALSE
 	*/		
-	public function login( $username, $password )
+	public function login( $username, $password, $remember_me = FALSE )
 	{
 		$query = $this->CI->db->where($this->CI->config->item('user_login', 'users'), $username)->limit(1)->get('users');
 		
@@ -63,8 +71,17 @@ class Users {
 		
 		if( crypt($password, $user->password) == $user->password )
 		{
+
+			$this->CI->session->set_userdata('user_id', $user->id);
+
+			if($remember_me)
+			{
+				$this->_remember_me();
+			}
+
 			return $user;	
 		}
+		
 		
 		return FALSE;		
 	}
@@ -87,7 +104,12 @@ class Users {
 	*/
 	public function logout()
 	{
-		$this->CI->session->unset_userdata('user_id');
+		if($this->CI->input->cookie('autologin') !== FALSE)
+		{
+			$this->CI->input->set_cookie('autologin');			
+		}
+		
+		$this->CI->session->unset_userdata('user_id');		
 	}
 	
 	public function reset_password( $username )
@@ -168,6 +190,21 @@ class Users {
 		
 		return $query->row();
 	}
+	
+	/**
+	* Void function which checks whether the user is logged in
+	* and sets the public logged_in variable to either TRUE or FALSE
+	*/	
+	public function logged_in()
+	{
+		if( $this->CI->session->userdata('user_id') !== FALSE )
+		{
+			return TRUE;
+		}			
+		
+		return FALSE;
+	}
+	
 
 	/**
 	* Hashes the password
@@ -194,17 +231,56 @@ class Users {
 	}
 	
 	/**
-	* Void function which checks whether the user is logged in
-	* and sets the public logged_in variable to either TRUE or FALSE
-	*/	
-	private function logged_in()
+	* Sets the 'Remember me' cookie, for fast login
+	* Void function.
+	*/
+	private function _remember_me()
 	{
-		if( $this->CI->session->userdata('user_id') !== FALSE )
-		{
-			return TRUE;
-		}			
 		
-		return FALSE;
+		$user = $this->user();
+		$key = $this->_generate_salt();
+		$digest = $this->_hash_password($key);
+		
+		$data = array(
+									'remember_me_key' => $digest,
+									);
+		
+		$this->CI->db->where('id', $user->id)->update('users', $data);
+		
+		$cookie = array(
+		    'name'   => 'autologin',
+		    'value'  => base64_encode( serialize( array($user->id, $key) ) ),
+		    'expire' => 60 * 60 * 24 * 31 //approx one month
+		);		
+		
+		
+		$this->CI->input->set_cookie($cookie); 
+	}
+	
+	private function _check_remember_me()
+	{
+		if( $this->CI->input->cookie('autologin') === FALSE || $this->logged_in())
+		{
+			return;
+		}
+		
+		$cookie_data = unserialize(base64_decode($this->CI->input->cookie('autologin')));
+		if( ! is_array($cookie_data) || count($cookie_data) != 2 )
+		{
+			return;
+		}
+		
+		list($user_id, $remember_me_key) = $cookie_data;
+		if( $user = $this->user($user_id) )
+		{
+			if( crypt($remember_me_key, $user->remember_me_key) == $user->remember_me_key )
+			{
+				$this->CI->session->set_userdata('user_id', $user->id);
+			}
+		}
+		
+		
+		
 	}
 		
 	/**

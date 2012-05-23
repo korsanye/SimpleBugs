@@ -1,11 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class Welcome extends MY_Controller {
 	
 	public function index()
-	{				
-		$this->load->view('login');
+	{
+		$this->output->set_output('logged_in');		
 	}
+	
+	
 }
 
 /* End of file welcome.php */
