@@ -8,7 +8,7 @@ class Login extends MY_Controller {
 		if( $this->input->post() !== FALSE )
 		{
 			$remember_me = (bool)$this->input->post('remember_me');
-			if( ! $this->users->login($this->input->post('email'), $this->input->post('password'), $remember_me) )
+			if( ! $this->simpleusers->login($this->input->post('email'), $this->input->post('password'), $remember_me) )
 			{
 				$data['login_error'] = true;
 				$this->load->vars($data);

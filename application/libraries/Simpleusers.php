@@ -4,16 +4,15 @@
  * User Authentication Library
  */
  
-class Users {
+class Simpleusers {
 	
 	protected $CI;
 	
 	public function __construct()
 	{
 		$this->CI =& get_instance();
-		$this->CI->config->load('users', TRUE);
-		$this->CI->load->helper(array('language', 'email', 'url', 'cookie'));
-		$this->CI->lang->load('users');
+		$this->CI->config->load('simpleusers', TRUE);
+		$this->CI->load->helper(array('email', 'url', 'cookie'));		
 		$this->CI->load->library(array('session', 'email'));		
 		$this->CI->load->database();
 		
@@ -24,14 +23,18 @@ class Users {
 		
 		
 		$this->_check_remember_me();
+		$this->_set_last_activity();
 	}
-	
-	public function salt()
-	{
-		//return $this->_hash_password('j26211');
-	}
-	
-	
+		
+		
+	/**
+	* Creates a user
+	*
+	* @param $username
+	* @param $password
+	* @param $email
+	* @return boolean FALSE if user couldn't be created, otherwise the new users unique ID.
+	*/
 	public function create( $username, $password, $email )
 	{		
 		$password_hash = $this->_hash_password($password);
@@ -50,6 +53,28 @@ class Users {
 		
 		return FALSE;					
 	}
+	
+	/**
+	* Updates user
+	* 
+	* @param	$id	The id of the user who needs to be updated
+	* @param	$username
+	* @param	$email
+	* @param	$password	Should be NULL if the user doesn't needs to get his password updated
+	* @return	boolean
+	*/
+	public function update( $id, $username, $email, $password = NULL)
+	{		
+		if( !is_null($password) && !empty($password) )
+		{
+			$data['password'] =	$this->_hash_password($password);
+		}
+		
+		$data['username'] = $username;
+		$data['email'] = $email;
+		
+		return $this->CI->db->where('id', $id)->update('users', $data);	
+	}
 		
 	/**
 	* Log in the user
@@ -60,7 +85,7 @@ class Users {
 	*/		
 	public function login( $username, $password, $remember_me = FALSE )
 	{
-		$query = $this->CI->db->where($this->CI->config->item('user_login', 'users'), $username)->limit(1)->get('users');
+		$query = $this->CI->db->where($this->CI->config->item('user_login', 'simpleusers'), $username)->limit(1)->get('users');
 		
 		if($query->num_rows() == 0)
 		{
@@ -86,6 +111,12 @@ class Users {
 		return FALSE;		
 	}
 	
+	/**
+	* Checks whether a username is registered.
+	*
+	* @param $username
+	* @return boolean
+	*/	
 	public function check_username( $username )
 	{
 		$query = $this->CI->db->where('username', $username)->limit(1)->get('users');
@@ -95,8 +126,26 @@ class Users {
 			return FALSE;	
 		}
 		
-		return $query->row();
+		return TRUE;
 	}
+	
+	/**
+	* Checks whether a email is registered.
+	*
+	* @param $email
+	* @return boolean
+	*/	
+	public function check_email( $email )
+	{
+		$query = $this->CI->db->where('email', $email)->limit(1)->get('users');
+		
+		if($query->num_rows() == 0)
+		{
+			return FALSE;	
+		}
+		
+		return TRUE;
+	}	
 	
 	/**
 	* Logs out users
@@ -115,7 +164,7 @@ class Users {
 	public function reset_password( $username )
 	{
 		
-		$query = $this->CI->db->where($this->CI->config->item('user_login', 'users'), $username)->limit(1)->get('users');
+		$query = $this->CI->db->where($this->CI->config->item('user_login', 'simpleusers'), $username)->limit(1)->get('users');
 		if( $query->num_rows() == 0 )
 		{
 			return FALSE;	
@@ -129,18 +178,17 @@ class Users {
 		$data = array(
 						'reset_password_key' => $hashed
 						);
-						
+		/*				
 		$this->CI->db->where('id', $user->id)->update('users', $data);
 		
 		// Send the e-mail
-		$this->CI->email->from($this->CI->config->item('site_email', 'users'), $this->CI->config->item('site_name', 'users'));
+		$this->CI->email->from($this->CI->config->item('site_email', 'simpleusers'), $this->CI->config->item('site_name', 'simpleusers'));
 		$this->CI->email->to($user->email);
 			
 		$this->CI->email->subject( lang('email_reset_password_subject') );
 		$this->CI->email->message( sprintf( lang('email_reset_password_body'), site_url('users/reset/'.$key) ) );
-		$this->CI->email->send();
-		
-		echo $this->CI->email->print_debugger();
+		$this->CI->email->send();		
+		*/
 								
 		return TRUE;				
 	}
@@ -205,6 +253,19 @@ class Users {
 		return FALSE;
 	}
 	
+
+	/**
+	* Sets the users last activity time
+	* Void function
+	*/
+	private function _set_last_activity()
+	{
+		if($this->logged_in())
+		{
+			$user = $this->user();
+			$this->CI->db->where('id', $user->id)->update('users', array('last_activity' => date("Y-m-d H:i:s")));	
+		}	
+	}
 
 	/**
 	* Hashes the password
@@ -292,7 +353,7 @@ class Users {
 	private function _generate_salt( $length = 22 )
 	{	
 					
-		if( $this->CI->config->item('random_org', 'users') === TRUE )
+		if( $this->CI->config->item('random_org', 'simpleusers') === TRUE )
 		{							
 			$num = ceil($length / 20);
 			
@@ -333,7 +394,3 @@ class Users {
 	
 		
 }
-	
-	
-
-	

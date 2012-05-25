@@ -5,9 +5,9 @@ class MY_Controller extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->library('users');
+		$this->load->library('simpleusers');
 		
-		if( ! $this->users->logged_in() && $this->uri->segment(1) != 'login' )
+		if( ! $this->simpleusers->logged_in() && $this->uri->segment(1) != 'login' )
 		{
 			if( ! $this->session->userdata('uri') && $this->uri->segment(1) != 'login' )
 			{
