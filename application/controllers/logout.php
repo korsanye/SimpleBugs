@@ -1,12 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends MY_Controller {
+class Logout extends MY_Controller {
 	
 	public function index()
 	{
-		$this->load->view('header');
-		
-		$this->load->view('footer');
+		$this->simpleusers->logout();
+		redirect(base_url());
 	}
 	
 	

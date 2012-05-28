@@ -34,7 +34,7 @@ $config['site_email'] = 'no-reply@example.com';
 | email
 */
 
-$config['user_login'] = 'username';
+$config['user_login'] = 'email';
 
 /*
 |--------------------------------------------------------------------------

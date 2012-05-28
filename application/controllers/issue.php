@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Welcome extends MY_Controller {
+class Issue extends MY_Controller {
 	
 	public function index()
 	{
@@ -9,5 +9,9 @@ class Welcome extends MY_Controller {
 		$this->load->view('footer');
 	}
 	
+	public function view( $id )
+	{
+		$this->output->set_output($id);
+	}
 	
 }
