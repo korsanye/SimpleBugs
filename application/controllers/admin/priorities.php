@@ -6,10 +6,9 @@ class Priorities extends MY_Controller {
 	{
 		$data['priorities'] = $this->priorities_model->priorities();
 		
+		$data['main_content'] = 'admin/priorities/overview';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/priorities/overview');
-		$this->load->view('admin/footer');
+		$this->load->view('admin/template');						
 
 	}
 	
@@ -29,10 +28,10 @@ class Priorities extends MY_Controller {
 			exit;		
 		}
 
+		$data['main_content'] = 'admin/priorities/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/priorities/create_edit');
-		$this->load->view('admin/footer');				
+		$this->load->view('admin/template');						
+
 	}
 	
 	public function edit( $id )
@@ -58,10 +57,10 @@ class Priorities extends MY_Controller {
 			exit;		
 		}
 
+		$data['main_content'] = 'admin/priorities/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/priorities/create_edit');
-		$this->load->view('admin/footer');				
+		$this->load->view('admin/template');						
+
 	}	
 	
 	public function delete( $id )
@@ -79,10 +78,10 @@ class Priorities extends MY_Controller {
 		}
 		
 		$data['priority'] = $priority;
+		$data['main_content'] = 'admin/priorities/delete';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/priorities/delete');
-		$this->load->view('admin/footer');
+		$this->load->view('admin/template');						
+
 		
 	}
 	

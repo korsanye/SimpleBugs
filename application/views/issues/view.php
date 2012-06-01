@@ -1,7 +1,7 @@
 	<div class="row">				
 			<div class="span12">
 			
-				<h1><?php echo lang('issue'); ?> #<?php echo $issue->id; ?></h1>
+				<h1><?php echo lang('issue'); ?> #<?php echo $issue->id; ?><?php if($issue->resolved): ?> <small>Resolved</small><?php endif; ?></h1>
 				<h3><?php echo $issue->title; ?></h3>
 				<h6><?php echo lang('assigned_to'); ?> <a href="#"><?php echo $this->simpleusers->user($issue->assigned_to)->username; ?></a></h6>
 				<hr>
@@ -27,10 +27,10 @@
 						<?php endif; ?>
 						
 						
-							<?php if(!isset($top)): ?>
+							<?php if(!isset($top) && !$issue->resolved): ?>
 							 <div class="pull-right">
 									<a href="<?php echo site_url('issues/assign/'.$issue->id); ?>" class="btn btn-mini btn-primary "><i class="icon-user"></i> <?php echo lang('assign'); ?></a>
-									<a href="#" class="btn btn-mini btn-success "><i class="icon-ok"></i> <?php echo lang('resolve'); ?></a>
+									<a href="<?php echo site_url('issues/resolve/'.$issue->id); ?>" class="btn btn-mini btn-success "><i class="icon-ok"></i> <?php echo lang('resolve'); ?></a>
 								</div>
 							<?php endif; $top = true;?>
 						

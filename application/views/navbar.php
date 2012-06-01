@@ -12,7 +12,9 @@
 		    </ul>    
 		
 		    <form class="navbar-search pull-right">
-			    <input type="text" class="search-query" placeholder="<?php echo lang('search'); ?>">
+		    	<form method="post" action="<?php echo site_url('search'); ?>">
+			    	<input type="text" class="search-query" placeholder="<?php echo lang('search'); ?>">
+			    </form>
 		    </form>
 		    		    
 		   	<ul class="nav pull-right">

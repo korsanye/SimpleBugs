@@ -78,6 +78,17 @@ class Issues extends MY_Controller {
 		$this->load->view('footer');
 	}
 	
+	public function resolve( $issue_id )
+	{
+		if( ! $issue = $this->issues_model->get_issue($issue_id) )
+		{
+			show_404();
+		}
+
+		$this->issues_model->resolve_issue($issue->id);
+		redirect(site_url($issue->id));
+	}
+	
 	public function assign( $issue_id )
 	{
 		if( ! $issue = $this->issues_model->get_issue($issue_id) )

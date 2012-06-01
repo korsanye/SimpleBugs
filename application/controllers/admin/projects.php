@@ -6,10 +6,9 @@ class Projects extends MY_Controller {
 	{
 		$data['projects'] = $this->projects_model->projects();
 		
+		$data['main_content'] = 'admin/projects/overview';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/projects/overview');
-		$this->load->view('admin/footer');		
+		$this->load->view('admin/template');				
 	}
 	
 	public function create()
@@ -27,10 +26,9 @@ class Projects extends MY_Controller {
 			exit;		
 		}
 
+		$data['main_content'] = 'admin/projects/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/projects/create_edit');
-		$this->load->view('admin/footer');				
+		$this->load->view('admin/template');				
 	}
 	
 	public function edit( $id )
@@ -55,10 +53,9 @@ class Projects extends MY_Controller {
 			exit;		
 		}
 
+		$data['main_content'] = 'admin/projects/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/projects/create_edit');
-		$this->load->view('admin/footer');				
+		$this->load->view('admin/template');				
 	}	
 	
 }

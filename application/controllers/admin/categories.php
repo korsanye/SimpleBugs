@@ -4,12 +4,11 @@ class Categories extends MY_Controller {
 	
 	public function index()
 	{
-		$data['categories'] = $this->categories_model->categories();
+		$data['categories'] = $this->categories_model->categories();				
 		
+		$data['main_content'] = 'admin/categories/overview';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/categories/overview');
-		$this->load->view('admin/footer');		
+		$this->load->view('admin/template');				
 	}
 	
 	public function create()
@@ -29,9 +28,12 @@ class Categories extends MY_Controller {
 		}
 
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/categories/create_edit');
-		$this->load->view('admin/footer');				
+
+
+		$data['main_content'] = 'admin/categories/create_edit';
+		$this->load->vars($data);
+		$this->load->view('admin/template');				
+
 	}
 	
 	public function edit( $id )
@@ -58,10 +60,9 @@ class Categories extends MY_Controller {
 			exit;		
 		}
 
+		$data['main_content'] = 'admin/categories/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/categories/create_edit');
-		$this->load->view('admin/footer');				
+		$this->load->view('admin/template');				
 	}
 	
 	public function delete( $id )
@@ -79,10 +80,10 @@ class Categories extends MY_Controller {
 		}
 		
 		$data['category'] = $category;
+		
+		$data['main_content'] = 'admin/categories/delete';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/categories/delete');
-		$this->load->view('admin/footer');
+		$this->load->view('admin/template');				
 		
 	}
 		

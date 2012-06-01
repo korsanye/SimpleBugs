@@ -80,11 +80,25 @@ class Issues_model extends CI_Model {
 	* 
 	* @return	object	query result
 	*/
-	public function get_issues()
-	{
+	public function get_issues( $filter = array() )
+	{			
+		$this->db->where('resolved', 0);
+		
 		$query = $this->db->get('issues');
 		return $query;
 	}
+	
+	/**
+	* Mark an issue as resolved
+	* 
+	* @param	integer	the issue ID
+	* @return	boolean
+	*/
+	public function resolve_issue( $issue_id )
+	{
+		$this->_set_last_update( $issue_id );
+		return $this->db->where('id', $issue_id)->limit(1)->update('issues', array('resolved' => 1));				
+	}	
 	
 	/**
 	* Creates a new issue post and returns the new issue post auto incremented ID.

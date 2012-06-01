@@ -6,10 +6,9 @@ class Users extends MY_Controller {
 	{
 		$data['users'] = $this->simpleusers->users();
 		
+		$data['main_content'] = 'admin/users/overview';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/users/overview');
-		$this->load->view('admin/footer');
+		$this->load->view('admin/template');				
 	}
 	
 	public function create()
@@ -35,10 +34,9 @@ class Users extends MY_Controller {
 		
 		
 		
+		$data['main_content'] = 'admin/users/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/users/create_edit');
-		$this->load->view('admin/footer');		
+		$this->load->view('admin/template');				
 	}
 	
 	public function edit( $id = NULL )
@@ -82,9 +80,8 @@ class Users extends MY_Controller {
 		
 		
 		
+		$data['main_content'] = 'admin/users/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/users/create_edit');
-		$this->load->view('admin/footer');		
+		$this->load->view('admin/template');				
 	}	
 }

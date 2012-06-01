@@ -6,7 +6,6 @@ class Settings extends MY_Controller {
 	{
 		if( $this->input->post() )
 		{
-			
 			$this->settings_model->set('date_format', $this->input->post('date_format'));
 			$this->settings_model->set('time_format', $this->input->post('time_format'));
 			$this->session->set_flashdata('alert-info', lang('settings_updated'));
@@ -21,9 +20,8 @@ class Settings extends MY_Controller {
 		
 		
 		
+		$data['main_content'] = 'admin/settings';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/settings');
-		$this->load->view('admin/footer');
+		$this->load->view('admin/template');				
 	}
 }

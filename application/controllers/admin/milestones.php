@@ -5,11 +5,11 @@ class Milestones extends MY_Controller {
 	public function index()
 	{
 		$data['milestones'] = $this->milestones_model->milestones();
-		
+			
+		$data['main_content'] = 'admin/milestones/overview';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/milestones/overview');
-		$this->load->view('admin/footer');		
+		$this->load->view('admin/template');						
+		
 	}
 	
 	public function create()
@@ -29,10 +29,9 @@ class Milestones extends MY_Controller {
 			exit;		
 		}
 
+		$data['main_content'] = 'admin/milestones/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/milestones/create_edit');
-		$this->load->view('admin/footer');				
+		$this->load->view('admin/template');						
 	}
 	
 	public function edit( $id )
@@ -58,9 +57,8 @@ class Milestones extends MY_Controller {
 			exit;		
 		}
 
+		$data['main_content'] = 'admin/milestones/create_edit';
 		$this->load->vars($data);
-		$this->load->view('admin/header');
-		$this->load->view('admin/milestones/create_edit');
-		$this->load->view('admin/footer');				
+		$this->load->view('admin/template');						
 	}
 }

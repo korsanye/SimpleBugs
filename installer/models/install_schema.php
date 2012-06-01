@@ -28,6 +28,7 @@ class Install_schema extends CI_Model {
 		  `time_spent` int(11) NOT NULL DEFAULT '0',		  
 		  `create_date` datetime NOT NULL,
 		  `last_update` datetime NOT NULL,
+		  `resolved` tinyint(4) NOT NULL DEFAULT '0',
 		  PRIMARY KEY (`id`)
 		)
 		";
