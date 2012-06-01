@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>#2312 - Something about a case which didn't make much sense - SimpleBugs</title>
+		<title><?php if(isset($page_title)): ?><?php echo $page_title; ?> - <?php endif; ?><?php echo lang('simplebugs'); ?></title>
 		<script type="text/javascript" src="<?php echo base_url('assets/bootstrap/js/bootstrap.min.js'); ?>">/</script>
 		<script type="text/javascript" src="<?php echo base_url('assets/js/jquery-1.7.2.min.js'); ?>">/</script>
 		<script type="text/javascript" src="<?php echo base_url('assets/bootstrap/js/bootstrap-alert.js'); ?>">/</script>

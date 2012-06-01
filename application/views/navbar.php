@@ -11,10 +11,8 @@
 			    <li<?php if($this->uri->segment(2) == "create"):?> class="active"<?php endif; ?>><a href="<?php echo site_url('issues/create'); ?>">New Issue</a></li>	    
 		    </ul>    
 		
-		    <form class="navbar-search pull-right">
-		    	<form method="post" action="<?php echo site_url('search'); ?>">
-			    	<input type="text" class="search-query" placeholder="<?php echo lang('search'); ?>">
-			    </form>
+		    <form class="navbar-search pull-right" method="post" action="<?php echo site_url('search'); ?>">		    	
+			    	<input type="text" class="search-query" placeholder="<?php echo lang('search'); ?>" name="search">			    
 		    </form>
 		    		    
 		   	<ul class="nav pull-right">
