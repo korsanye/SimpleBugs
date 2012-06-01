@@ -53,8 +53,8 @@ class Milestones extends MY_Controller {
 		if ($this->form_validation->run() === TRUE)
 		{
 			$this->milestones_model->update( $milestone->id, set_value('name'), set_value('milestone') );
-			$this->session->set_flashdata('alert-success', lang('project_has_been_saved'));
-			redirect('admin/projects');
+			$this->session->set_flashdata('alert-success', lang('milestone_has_been_saved'));
+			redirect('admin/milestones');
 			exit;		
 		}
 
