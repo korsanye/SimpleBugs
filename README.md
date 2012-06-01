@@ -1,6 +1,5 @@
-=========
-SimpeBugs
-=========
+SimpleBugs
+==========
 
 SimpleBugs is a free, lightweight and open source bug and issue tracking system written in [CodeIgniter](http://codeigniter.com).
 
@@ -11,6 +10,7 @@ Views and functionalities is built on some other great free and open source libr
  - [Boostrap DatePicker](http://www.eyecon.ro/bootstrap-datepicker/) by [Stefan Petre](http://www.eyecon.ro/)
  - [jQuery](http://jquery.com/)
  
+================================
 Want to help develop SimpleBugs?
 ================================
 
