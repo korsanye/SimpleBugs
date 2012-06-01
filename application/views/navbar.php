@@ -17,7 +17,7 @@
 		    		    
 		   	<ul class="nav pull-right">
 		   		<!-- <li><a href="#">Notifications <span class="badge badge-info">8</span></a></li> -->
-		  		<li<?php if($this->uri->segment(1) == "admin"):?> class="active"<?php endif; ?>><a href="<?php echo site_url('admin'); ?>"><?php echo lang('administration'); ?></a></li>
+		  		<?php if($this->simpleusers->is_admin()): ?><li<?php if($this->uri->segment(1) == "admin"):?> class="active"<?php endif; ?>><a href="<?php echo site_url('admin'); ?>"><?php echo lang('administration'); ?></a></li><?php endif; ?>
 		  		<li><a href="<?php echo site_url('logout'); ?>"><?php echo lang('logout'); ?></a></li>
 		  	</ul>
 

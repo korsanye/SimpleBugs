@@ -64,7 +64,7 @@ $autoload['libraries'] = array('session', 'database', 'form_validation');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'language', 'form');
+$autoload['helper'] = array('url', 'language', 'form', 'time');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array('simplebugs');
 |
 */
 
-$autoload['model'] = array('projects_model', 'milestones_model', 'settings_model', 'priorities_model', 'categories_model');
+$autoload['model'] = array('projects_model', 'milestones_model', 'settings_model', 'priorities_model', 'categories_model', 'issues_model');
 
 
 /* End of file autoload.php */

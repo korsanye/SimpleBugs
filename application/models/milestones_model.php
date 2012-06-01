@@ -59,7 +59,7 @@ class Milestones_model extends CI_Model {
 	*/	
 	public function milestone($id)
 	{	
-		$query = $this->db->where('id', $id)->limit(1)->get('milestone');
+		$query = $this->db->where('id', $id)->limit(1)->get('milestones');
 		if( $query->num_rows() == 0 )
 		{
 			return FALSE;

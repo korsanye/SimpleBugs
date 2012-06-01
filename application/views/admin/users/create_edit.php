@@ -37,6 +37,15 @@
 		  	  </div>
 		    </div>
 
+				<?php if($id != 1): ?>
+				<div class="control-group">			    
+			    <div class="controls">
+			    	<label class="checkbox" for="is_admin">
+			    		<input type="checkbox" name="is_admin"<?php if($is_admin): ?> checked="checked"<?php endif; ?>>
+			    	<?php echo lang('admin_rights'); ?></label>
+		  	  </div>
+		    </div>
+		    <?php endif; ?>
 		    
 		    <div class="form-actions">
 		    	<input type="submit" value="<?php echo (isset($edit)) ? lang('save') : lang('create'); ?>" class="btn btn-primary">

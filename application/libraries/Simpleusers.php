@@ -35,7 +35,7 @@ class Simpleusers {
 	* @param $email
 	* @return boolean FALSE if user couldn't be created, otherwise the new users unique ID.
 	*/
-	public function create( $username, $password, $email )
+	public function create( $username, $password, $email, $is_admin = FALSE )
 	{		
 		$password_hash = $this->_hash_password($password);
 		
@@ -46,6 +46,11 @@ class Simpleusers {
 							'join_date' => date('Y-m-d H:i:s')
 							);
 							
+		if( $is_admin )
+		{
+			$user_data['is_admin'] = 1;	
+		}
+		
 		if( $this->CI->db->insert('users', $user_data) )
 		{
 			return $this->CI->db->insert_id();	
@@ -63,7 +68,7 @@ class Simpleusers {
 	* @param	$password	Should be NULL if the user doesn't needs to get his password updated
 	* @return	boolean
 	*/
-	public function update( $id, $username, $email, $password = NULL)
+	public function update( $id, $username, $email, $password = NULL, $is_admin = FALSE)
 	{		
 		if( !is_null($password) && !empty($password) )
 		{
@@ -72,6 +77,11 @@ class Simpleusers {
 		
 		$data['username'] = $username;
 		$data['email'] = $email;
+		$data['is_admin'] = 0;
+		if( $is_admin )
+		{
+			$data['is_admin'] = 1;	
+		}
 		
 		return $this->CI->db->where('id', $id)->update('users', $data);	
 	}
@@ -252,7 +262,32 @@ class Simpleusers {
 		
 		return FALSE;
 	}
-	
+
+	/**
+	* Tells whether the user is registered as an admin
+	*
+	* @param	$id	The user ID to check - if none provided, it checks the current user
+	* @return	boolean
+	*/
+	public function is_admin( $id = NULL )
+	{
+		if( is_null($id) )
+		{
+			if( $this->CI->session->userdata('user_id') === FALSE )
+			{
+				return FALSE;	
+			}
+			
+			$id = $this->CI->session->userdata('user_id');
+		}
+		
+		$user = $this->user($id);
+		if( $user->is_admin == 1 )
+		{
+			return TRUE;
+		}
+		return FALSE;
+	}	
 
 	/**
 	* Sets the users last activity time

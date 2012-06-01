@@ -73,6 +73,10 @@ if (defined('ENVIRONMENT'))
  *
  */
 	$application_folder = 'application';
+	if(file_exists('installer'))
+	{
+		$application_folder = 'installer';
+	}
 
 /*
  * --------------------------------------------------------------------

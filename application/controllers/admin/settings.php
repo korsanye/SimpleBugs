@@ -8,6 +8,7 @@ class Settings extends MY_Controller {
 		{
 			
 			$this->settings_model->set('date_format', $this->input->post('date_format'));
+			$this->settings_model->set('time_format', $this->input->post('time_format'));
 			$this->session->set_flashdata('alert-info', lang('settings_updated'));
 			redirect('admin/settings');
 			exit;
@@ -16,6 +17,7 @@ class Settings extends MY_Controller {
 
 		$this->load->helper('form');
 		$data['date_format'] = $this->settings_model->get('date_format', "Y-m-d");
+		$data['time_format'] = $this->settings_model->get('time_format', "h:i a");
 		
 		
 		

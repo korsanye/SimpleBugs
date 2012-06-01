@@ -17,6 +17,11 @@ class MY_Controller extends CI_Controller {
 			redirect(site_url('login'));
 		}
 		
+		if( $this->uri->segment(1) == 'admin' && ! $this->simpleusers->is_admin() )
+		{
+			show_error( lang('not_allowed_here'), 403);
+		}
+		
 	}
 		
 }
