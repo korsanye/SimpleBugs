@@ -1,0 +1,66 @@
+.issue_top
+{
+	background-color: #F5F5F5;
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	border-radius: 4px 4px 0px 0px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+	min-height: 20px;
+	padding: 5px;
+}
+
+.issue_bottom
+{
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	border-top: none;
+	border-radius: 0px 0px 4px 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+	margin-bottom: 20px;
+	min-height: 20px;
+	padding: 5px;
+}
+
+.issue-toolbar
+{
+	margin-bottom: 40px;
+}
+
+.navbar-nav>li>a.profile-image {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#login img {
+	margin: 10px 0;
+}
+#login .center {
+	text-align: center;
+}
+
+#login .login {
+	max-width: 300px;
+	margin: 35px auto;
+}
+
+#login .login-form{
+	padding:0px 25px;
+}
+
+
+footer {
+	opacity: 0.6;
+	filter: alpha(opacity = 60);
+}
+
+
+.status {
+	font-family: 'Source Sans Pro', sans-serif;
+}
+.status .panel-title {
+	font-family: 'Oswald', sans-serif;
+	font-size: 72px;
+	font-weight: bold;
+	color: #fff;
+	line-height: 45px;
+	padding-top: 20px;
+	letter-spacing: -0.8px;
+}
